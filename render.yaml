@@ -1,0 +1,24 @@
+# Blueprint do Render: cria o serviço web do Pratik Mov.
+# O banco fica no Neon (gratuito e sem prazo de expiração).
+services:
+  - type: web
+    name: pratik-mov
+    runtime: node
+    plan: free
+    region: virginia
+    buildCommand: npm run build
+    startCommand: npm start
+    healthCheckPath: /api/saude
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NODE_VERSION
+        value: "22"
+      - key: DATABASE_URL
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_EXPIRES_IN
+        value: 8h
+      - key: BETA_PRO
+        value: "true"

@@ -1,20 +1,11 @@
 {
   "name": "pratik-mov",
   "private": true,
-  "version": "0.1.0",
-  "description": "Pratik Mov — app do estudante de Educação Física (MVP, fase 2)",
-  "workspaces": [
-    "server",
-    "web"
-  ],
+  "version": "0.2.0",
+  "description": "Pratik Mov: app do estudante de Educação Física",
+  "engines": { "node": ">=20" },
   "scripts": {
-    "setup": "npm run setup -w server",
-    "db:init": "npm run db:init -w server",
-    "dev": "concurrently -n api,web -c magenta,cyan \"npm run dev -w server\" \"npm run dev -w web\"",
-    "build": "npm run build -w web",
-    "start": "npm run start -w server"
-  },
-  "devDependencies": {
-    "concurrently": "^9.1.0"
+    "build": "npm install --prefix frontend --include=dev && npm run build --prefix frontend && npm install --prefix backend --omit=dev",
+    "start": "npm run db:migrate --prefix backend && npm start --prefix backend"
   }
 }

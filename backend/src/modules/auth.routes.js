@@ -1,3 +1,4 @@
+const config = require('../config');
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const rateLimit = require('express-rate-limit');
@@ -44,9 +45,10 @@ router.post('/cadastro', limiteAcesso, validar(cadastroSchema), rota(async (req,
   try {
     // O papel só pode ser aluno ou professor: nunca admin pelo cadastro público.
     const { rows: [u] } = await query(
-      `INSERT INTO usuarios (nome, email, senha_hash, curso, papel, cref) VALUES ($1, $2, $3, $4, $5, $6)
+      `INSERT INTO usuarios (nome, email, senha_hash, curso, papel, cref, plano) VALUES ($1, $2, $3, $4, $5, $6, $7)
        RETURNING id, nome, email, papel, plano, curso, cref`,
-      [nome, email, hash, curso ?? null, papel, papel === 'professor' ? cref : null]
+      [nome, email, hash, curso ?? null, papel, papel === 'professor' ? cref : null,
+        papel === 'aluno' && config.betaPro ? 'pro' : 'gratuito']
     );
     req.usuario = { id: u.id };
     await registrar(req, 'cadastro', 'usuario', u.id);

@@ -1,5 +1,7 @@
 # Pratik Mov · fases 2, 3 e 4
 
+> **Publicar para teste:** veja [PUBLICAR.md](PUBLICAR.md) (Render + Neon, gratuitos).
+
 App para estudantes de Educação Física registrarem atendimentos de estágio e projetos e gerarem o relatório.
 
 - **backend/**: Node.js + Express + PostgreSQL (API em `/api`)
@@ -120,6 +122,12 @@ npm test
 ```
 
 Use um banco de teste separado: os testes criam e apagam usuários.
+
+### Trocar a senha de alguém
+
+```powershell
+npm run senha -- email@exemplo.com NovaSenha123
+```
 
 ### Versão de produção
 

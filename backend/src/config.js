@@ -7,6 +7,8 @@ const config = {
   jwtExpiresIn: process.env.JWT_EXPIRES_IN || '2h',
   isProduction: process.env.NODE_ENV === 'production',
   limiteGratuito: Number(process.env.LIMITE_GRATUITO || 10),
+  // Período de testes: toda conta nova de aluno já nasce no Pro (enquanto não há cobrança).
+  betaPro: process.env.BETA_PRO === 'true',
 };
 
 // Falha cedo: sem segredo forte, o servidor não sobe.

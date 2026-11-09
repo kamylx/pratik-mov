@@ -94,3 +94,21 @@ test('relatório final traz identificação, pessoas anonimizadas e projetos', a
   assert.equal(Number(r.body.projetos[0].media_presentes), 2);
   assert.equal(r.body.totais.projetos, 1);
 });
+
+test('modo beta: conta nova de aluno já nasce no Pro; professor não', async () => {
+  const config = require('../src/config');
+  config.betaPro = true;
+  const emailBeta = `beta.${sufixo}@teste.com`;
+  const emailProf = `prof.beta.${sufixo}@teste.com`;
+  try {
+    const a = await request(app).post('/api/auth/cadastro').send({ nome: 'Aluna Beta', email: emailBeta, senha: 'senhaForte123' });
+    assert.equal(a.status, 201);
+    assert.equal(a.body.usuario.plano, 'pro');
+    const p = await request(app).post('/api/auth/cadastro').send({ nome: 'Prof Beta', email: emailProf, senha: 'senhaForte123', papel: 'professor', cref: '012345-G/PA' });
+    assert.equal(p.status, 201);
+    assert.equal(p.body.usuario.plano, 'gratuito');
+  } finally {
+    config.betaPro = false;
+    await pool.query('DELETE FROM usuarios WHERE email = ANY($1)', [[emailBeta, emailProf]]);
+  }
+});
